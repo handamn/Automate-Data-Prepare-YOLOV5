@@ -1,0 +1,3 @@
+[submodule "4_Program/yolov5"]
+	path = 4_Program/yolov5
+	url = https://github.com/handamn/yolov5.git
