@@ -6,11 +6,21 @@ from tqdm import tqdm
 import shutil
 import random
 
-out_or_in       = "Out_line"
+"""out_or_in       = "Out_line"
 nama_folder     = "4_ACDF" 
 tipe_kendaraan  = "Innova_RHD"
 box_ke          = "Box1"
+basis_ke        = "train1"""
+
 basis_ke        = "train1"
+
+out_or_in = input("Masukkan Area : ")
+kendaraan = input("Masukkan Mobil : ")
+steer = input("Masukkan Steer : ")
+tipe_kendaraan = kendaraan + "_" + steer
+box_ke = input("Masukkan Boxke : ")
+nama_folder = input("Masukkan nama folder : ")
+
 
 def baca_file_csv(nama_file):
     data = []
@@ -23,11 +33,11 @@ def baca_file_csv(nama_file):
 nama_file_csv = '/home/pcsistem/camera_vision_develop/2_Stock_Foto/Out_line/Innova_RHD/Box1/index_kelas.csv'  # Ganti dengan nama file CSV Anda
 data_csv = baca_file_csv(nama_file_csv)
 
-val = input("Enter your value: ")
+Kode_Box = input("Enter your value: ")
 
-if val in data_csv:
-    index = data_csv.index(val)
-    print(f"{val} ditemukan pada indeks {index}")
+if Kode_Box in data_csv:
+    index = data_csv.index(Kode_Box)
+    print(f"{Kode_Box} ditemukan pada indeks {index}")
     print(True)
     # Lakukan operasi lain berdasarkan indeks jika diperlukan
     ############################
@@ -105,7 +115,7 @@ if val in data_csv:
 
 
 else:
-    print(f"{val} tidak ditemukan dalam data_csv")
+    print(f"{Kode_Box} tidak ditemukan dalam data_csv")
     print(False)
 
 
