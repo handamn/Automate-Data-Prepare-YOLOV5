@@ -75,8 +75,6 @@ def split_data(val, input_folder, output_folder, num_samples=200, split_ratio=0.
 
             pbar.update(1)
 
-# Contoh penggunaan dengan 200 sampel acak
-#split_data(folder_input, folder_output, num_samples=200, split_ratio=0.8, random_seed=42)
 
 nama_file_csv = '/home/pcsistem/camera_vision_develop/2_Stock_Foto/Out_line/Innova_RHD/Box1/index_kelas.csv'  # Ganti dengan nama file CSV Anda
 data_csv = baca_file_csv(nama_file_csv)
@@ -84,10 +82,83 @@ data_csv = baca_file_csv(nama_file_csv)
 ############################
 base_folder = '/home/pcsistem/camera_vision_develop/2_Stock_Foto/'
 folder_inline = base_folder + 'In_line/' + tipe_kendaraan + '/' + box_ke + '/' + nama_folder + '/'
-#folder_outline = base_folder + 'Out_line/' + tipe_kendaraan + '/' + box_ke + '/' + nama_folder + '/'
+folder_dummy = "/home/pcsistem/camera_vision_develop/4_Program/coba"
 ############################
 
 val = input("Enter your value: ")
+
+###outline_clean###
+
+if val in data_csv:
+    index = data_csv.index(val)
+    print(f"{val} ditemukan pada indeks {index}")
+
+    ##### Outline Clean #####
+    for x in data_csv:
+        if x != val :
+            folder_outline_clean = base_folder + 'Out_line/' + tipe_kendaraan + '/' + box_ke + '/' + x
+
+            folder_images_Outline = folder_outline_clean + 'images/'
+            folder_labels_Outline = folder_outline_clean + 'labels/'
+            split_data(val,folder_outline_clean, folder_dummy, num_samples=35, split_ratio=0.8, random_seed=42)
+    ########################
+
+    ##### Inline Clean #####
+    folder_inline = base_folder + 'In_line/' + tipe_kendaraan + '/' + box_ke + '/' + val + '/'
+    folder_images_Outline = folder_inline + 'images/'
+    folder_labels_Outline = folder_inline + 'labels/'
+    split_data(val,folder_inline, "/home/pcsistem/camera_vision_develop/4_Program/coba", num_samples=250, split_ratio=0.8, random_seed=42)
+    ########################
+
+    ##### Outline Clean #####
+    folder_outline = base_folder + 'Out_line/' + tipe_kendaraan + '/' + box_ke + '/' + val + '/'
+    folder_images_Outline = folder_outline + 'images/'
+    folder_labels_Outline = folder_outline + 'labels/'
+    split_data(val,folder_outline, "/home/pcsistem/camera_vision_develop/4_Program/coba", num_samples=250, split_ratio=0.8, random_seed=42)
+    ########################
+
+
+    print("ALHAMDULILLAH SELESAI")
+    print(" ")
+
+
+else:
+    print(f"{val} tidak ditemukan dalam data_csv")
+    print(False)
+
+
+###inline###
+"""
+if val in data_csv:
+    index = data_csv.index(val)
+    print(f"{val} ditemukan pada indeks {index}")
+    print(True)
+    # Lakukan operasi lain berdasarkan indeks jika diperlukan
+    ############################
+
+    folder_outline = base_folder + 'In_line/' + tipe_kendaraan + '/' + box_ke + '/' + val + '/'
+
+
+    folder_images_Outline = folder_outline + 'images/'
+    folder_labels_Outline = folder_outline + 'labels/'
+
+
+    # Mendapatkan daftar nama file di dalam folder
+    image_list = os.listdir(folder_images_Outline)
+    i = 0
+
+    split_data(val,folder_outline, "/home/pcsistem/camera_vision_develop/4_Program/coba", num_samples=250, split_ratio=0.8, random_seed=42)
+
+    print("ALHAMDULILLAH SELESAI")
+    print(" ")
+
+
+else:
+    print(f"{val} tidak ditemukan dalam data_csv")
+    print(False)
+
+
+###outline###
 
 if val in data_csv:
     index = data_csv.index(val)
@@ -115,4 +186,4 @@ if val in data_csv:
 
 else:
     print(f"{val} tidak ditemukan dalam data_csv")
-    print(False)
+    print(False)"""
