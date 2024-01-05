@@ -6,7 +6,7 @@ import shutil
 import random
 
 out_or_in       = "Out_line"
-nama_folder     = "X_4_ACDF" 
+nama_folder     = "4_ACDF" 
 tipe_kendaraan  = "Innova_RHD"
 box_ke          = "Box1"
 basis_ke        = "train1"
@@ -19,7 +19,7 @@ folder_model = '/home/pcsistem/camera_vision_develop/2_Stock_Foto/' + out_or_in 
 
 model = torch.hub.load('.', "custom", path = folder_model, source='local', force_reload=True)
 
-direktori_class = "/home/pcsistem/camera_vision_develop/2_Stock_Foto/Out_line/Innova_RHD/Box1/list.txt"
+direktori_class = "/home/pcsistem/camera_vision_develop/2_Stock_Foto/Out_line/Innova_RHD/Box1/index_kelas.txt"
 
 with open(direktori_class, "r") as f:
     classes_list = [line.strip().replace("X_","") for line in f.readlines()]
@@ -74,10 +74,63 @@ for nama in tqdm(train_list, desc="Processing Images"):
             f.write(new_kelas)"""
             
     else :
+        os.remove(direktori_image)
         continue
     
     
-    
-
 print("ALHAMDULILLAH SELESAI")
 print(" ")
+
+
+###################################################
+
+
+def split_data(input_folder, output_folder, split_ratio=0.8, random_seed=42):
+    random.seed(random_seed)
+
+    folder_gambar = os.path.join(input_folder, "images")
+    folder_label = os.path.join(input_folder, "labels")
+
+    folder_pelatihan = os.path.join(output_folder, "train")
+    folder_gambar_pelatihan = os.path.join(folder_pelatihan, "images")
+    folder_label_pelatihan = os.path.join(folder_pelatihan, "labels")
+
+    folder_validasi = os.path.join(output_folder, "val")
+    folder_gambar_validasi = os.path.join(folder_validasi, "images")
+    folder_label_validasi = os.path.join(folder_validasi, "labels")
+
+    # Buat folder keluaran jika belum ada
+    for folder in [folder_pelatihan, folder_gambar_pelatihan, folder_label_pelatihan,
+                   folder_validasi, folder_gambar_validasi, folder_label_validasi]:
+        os.makedirs(folder, exist_ok=True)
+
+    # Dapatkan daftar gambar di folder input
+    daftar_gambar = os.listdir(folder_gambar)
+
+    # Hitung jumlah gambar untuk pelatihan
+    num_train = int(len(daftar_gambar) * split_ratio)
+
+    # Acak daftar gambar
+    random.shuffle(daftar_gambar)
+
+    # Salin gambar dan label ke folder pelatihan
+    for nama_gambar in daftar_gambar[:num_train]:
+        path_gambar = os.path.join(folder_gambar, nama_gambar)
+        path_label = os.path.join(folder_label, nama_gambar.replace(".jpg", ".txt"))
+
+        shutil.copy(path_gambar, folder_gambar_pelatihan)
+        shutil.copy(path_label, folder_label_pelatihan)
+
+    # Salin gambar dan label ke folder validasi
+    for nama_gambar in daftar_gambar[num_train:]:
+        path_gambar = os.path.join(folder_gambar, nama_gambar)
+        path_label = os.path.join(folder_label, nama_gambar.replace(".jpg", ".txt"))
+
+        shutil.copy(path_gambar, folder_gambar_validasi)
+        shutil.copy(path_label, folder_label_validasi)
+
+
+
+folder_input = '/home/pcsistem/camera_vision_develop/2_Stock_Foto/' + out_or_in + '/' + tipe_kendaraan + '/' + box_ke + '/' + nama_folder
+folder_output = '/home/pcsistem/camera_vision_develop/2_Stock_Foto/' + out_or_in + '/' + tipe_kendaraan + '/' + box_ke + '/' + nama_folder
+split_data(folder_input, folder_output, split_ratio=0.8, random_seed=42)
