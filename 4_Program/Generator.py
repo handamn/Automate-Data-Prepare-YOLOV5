@@ -1,93 +1,155 @@
+import os
+import random
+import shutil
+import yaml
+
 #####################
 basis_folder = "/home/pcsistem/camera_vision_develop/"
 #####################
 
-def data_input():
-    print(" ")
+def data_input_default():
     car           = input("Enter Car Model             (ex : Innova)         : ")
     steer         = input("Enter Steer                 (ex : RHD)            : ")
     box           = input("Enter Box Class             (ex : Box1)           : ")
     kode_box      = input("Enter Code Box              (ex : X_3_CDE)        : ")
+    kendaraan  = car + "_" + steer
+
+    return kendaraan, box, kode_box
+
+def data_input():
     epochs_count  = input("Enter How Many Epochs       (ex : 100)            : ")
     model_type    = input("Enter Train Model Conf      (ex : yolov5l_CBAM_2) : ")
     batch_count   = input("Enter Batch Count           (ex : -1)             : ")
     pat_count     = input("Enter Patience              (ex : 100)            : ")
 
-    kendaraan  = car + "_" + steer
+    return epochs_count, model_type, batch_count, pat_count
 
-    return kendaraan, box, kode_box, epochs_count, model_type, batch_count, pat_count
-
-def Activate_Label():
-    print(" ")
-
-    konfirmasi    = input("Is the Label active?        (ex : Yes / No)      : ")
+def Activate_Label(confirm):
+    konfirmasi    = confirm
     home_folder = f'cd {basis_folder}'
     activate_script = f'source Z_LabelImg/bin/activate'
-    program = "labelImg"
 
     if konfirmasi == "Yes" :
         print("")
-        print(program)
         print("")
     
     else:
         print("")
         print(home_folder)
         print(activate_script)
-        print(program)
+        print("cd 4_Program")
         print("")
 
-def Activate_Conda():
-    print("")
-    konfirmasi    = input("Is the Conda active?        (ex : Yes / No)      : ")
-
-    if konfirmasi == "Yes":
-        print("")
-        print("Copy dari Bawah Border Ini")
-        print("======================================================")
+def Activate_Conda(confirm):
+    if confirm == "Yes":
         print("")
     
     else:
-        print("")
-        print("Copy dari Bawah Border Ini")
-        print("======================================================")
-        print("")
         print("conda activate Engser1")
-        print("")
 
+def copy_random_images(source_folder, destination_folder, num_images):
+    image_files = [f for f in os.listdir(source_folder) if f.lower().endswith(('.png','.jpg','.jpeg'))]
+    num_images = min(num_images,len(image_files))
+    random_images = random.sample(image_files, num_images)
 
-print("")
-print("Program Generator")
-print("")
+    for image in random_images:
+        source_path = os.path.join(source_folder, image)
+        destination_path = os.path.join(destination_folder, image)
+        shutil.copy2(source_path, destination_path)
+        print(f"Copied: {image}")
 
-print("Pilih Menu :")
-print("1. Ambil Gambar")
-print("2. Pilih Random 50")
-print("3. Anotasi")
-print("4. Training Prepare Image")
-print("5. Auto Anotasi")
-print("6. Combine")
-print("7. Training Final")
-print("")
+def print_menu():
+    print("")
+    print("Program Generator")
+    print("")
+    print("Pilih Menu :")
+    print("1. Ambil Gambar")
+    print("2. Pilih Random 50")
+    print("3. Anotasi")
+    print("4. Training Prepare Image")
+    print("5. Auto Anotasi")
+    print("6. Combine")
+    print("7. Training Final")
+    print("")
 
-pilih_menu = input("Enter Menu                                        : ")
-print("======================================================")
+    hasil_menu = input("Enter Menu                                        : ")
+    print("======================================================")
+
+    return hasil_menu
+
+pilih_menu = print_menu()
 
 if pilih_menu == "1":
     print("coming_soon")
 
+elif pilih_menu == "2":
+    out_or_in     = input("Enter Production Line       (ex : Out_line)       : ")
+    kendaraan, box, kode_box = data_input_default()
+    jumlah_gambar = input("Enter How Many Image        (ex : 100)            : ")
+
+    source_folder = f'{basis_folder}2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/images/'
+    automasi_folder = f'{basis_folder}2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/X_Automasi/'
+    sub_automasi_images_folder = os.path.join(automasi_folder, 'images')
+    sub_automasi_labels_folder = os.path.join(automasi_folder, 'labels')
+
+    for folder in [automasi_folder, sub_automasi_images_folder, sub_automasi_labels_folder]:
+        os.makedirs(folder, exist_ok=True)
+
+    value_data = kode_box
+    file_path_2 = f'{sub_automasi_labels_folder}/classes.txt'
+
+    with open(file_path_2, 'w') as file:
+        file.write(value_data)
+
+    destination_folder = sub_automasi_images_folder
+    copy_random_images(source_folder, destination_folder, int(jumlah_gambar))
+
+    data = {
+        'train': automasi_folder,
+        'val': automasi_folder,
+        'names': {
+            0: kode_box
+        }
+    }
+
+    file_path = automasi_folder + kode_box +'.yaml'  # Ganti dengan nama file YAML yang diinginkan
+
+    with open(file_path, 'w') as file:
+        yaml.dump(data, file, default_flow_style=False, sort_keys=False)
+
+    print(f"File TXT telah dibuat: {file_path_2}")
+    print(f"File YAML telah dibuat: {file_path}")
+
 elif pilih_menu == "3":
-    Activate_Label()
+    program = "labelImg"
+    konfirmasi     = input("Is the Conda active?        (ex : Yes / No)      : ")
+    konfirmasi2    = input("Is the Label active?        (ex : Yes / No)      : ")
+    out_or_in     = input("Enter Production Line       (ex : Out_line)       : ")
+    kendaraan, box, kode_box = data_input_default()
+    root_folder = f'{basis_folder}2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/X_Automasi'
+
+    folder_image = f'{root_folder}/images'
+    folder_label = f'{root_folder}/labels/classes.txt'
+    string_script = f'{program} {folder_image} {folder_label}'
+
+    print("")
+    print("Copy dari Bawah Border Ini")
+    print("======================================================")
+    print("")
+    Activate_Conda(konfirmasi)
+    Activate_Label(konfirmasi2)
+    print(string_script)
+    print("deactivate")
     print("")
     print("======================================================")
     print("Sampai Sebelum Border Ini")
     print("")
 
 elif pilih_menu == "4":
-    kendaraan, box, kode_box, epochs_count, model_type, batch_count, pat_count = data_input()
-
-    print(" ")
     out_or_in     = input("Enter Production Line       (ex : Out_line)       : ")
+    kendaraan, box, kode_box = data_input_default()
+    epochs_count, model_type, batch_count, pat_count = data_input()
+    konfirmasi    = input("Is the Conda active?        (ex : Yes / No)      : ")
 
     #DATA
     data_source = f'{basis_folder}2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/X_Automasi/{kode_box}.yaml'
@@ -107,10 +169,13 @@ elif pilih_menu == "4":
     #PATIENCE
     patience_size_source = pat_count
 
-
     #SCRIPT TOTAL
     print("")
-    Activate_Conda()
+    print("Copy dari Bawah Border Ini")
+    print("======================================================")
+    print("")
+    Activate_Conda(konfirmasi)
+    print("")
     script_train = f"python {basis_folder}4_Program/yolov5/train.py --data {data_source} --project {project_source} --epochs {epochs_source} --weights '' --cfg {cfg_source} --batch-size {batch_size_source} --patience {patience_size_source}"
     print(script_train)
     print("")
@@ -118,9 +183,17 @@ elif pilih_menu == "4":
     print("Sampai Sebelum Border Ini")
     print("")
 
+elif pilih_menu == "5":
+    print("coming_soon")
+
+elif pilih_menu == "6":
+    print("coming_soon")
 
 elif pilih_menu == "7":
-    kendaraan, box, kode_box, epochs_count, model_type, batch_count, pat_count = data_input()
+    kendaraan, box, kode_box = data_input_default()
+    epochs_count, model_type, batch_count, pat_count = data_input()
+    konfirmasi    = input("Is the Conda active?        (ex : Yes / No)      : ")
+
     #DATA
     data_source = f'{basis_folder}5_STUDIO_MAKER/{kendaraan}/{box}/{kode_box}/{kode_box}.yaml'
 
@@ -141,11 +214,14 @@ elif pilih_menu == "7":
 
     #SCRIPT TOTAL
     print("")
-    Activate_Conda()
+    print("Copy dari Bawah Border Ini")
+    print("======================================================")
+    print("")
+    Activate_Conda(konfirmasi)
+    print("")
     script_train = f"python {basis_folder}4_Program/yolov5/train.py --data {data_source} --project {project_source} --epochs {epochs_source} --weights '' --cfg {cfg_source} --batch-size {batch_size_source} --patience {patience_size_source}"
     print(script_train)
     print("")
     print("======================================================")
     print("Sampai Sebelum Border Ini")
     print("")
-
