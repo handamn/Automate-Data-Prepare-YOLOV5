@@ -20,8 +20,6 @@ kendaraan  = car + "_" + steer
 
 folder_train_images = f'/home/pcsistem/camera_vision_develop/2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/images/'
 folder_train_labels = f'/home/pcsistem/camera_vision_develop/2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/labels/'
-os.makedirs(folder_train_labels, exist_ok=True)
-
 
 folder_model = f'/home/pcsistem/camera_vision_develop/2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/Models/{model_ke}/weights/best.pt'
 
