@@ -2,10 +2,20 @@ import os
 import random
 import shutil
 import yaml
+import subprocess
 
 #####################
 basis_folder = "/home/pcsistem/camera_vision_develop/"
 #####################
+
+def jalankan_file_python(nama_file):
+    try:
+        subprocess.run(["python", nama_file], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error: {e}")
+
+def jalankan_file_python2(nama_file, argumen):
+    subprocess.run(["python", nama_file] + argumen, check=True)
 
 def data_input_default():
     car           = input("Enter Car Model             (ex : Innova)         : ")
@@ -122,7 +132,6 @@ elif pilih_menu == "2":
 
 elif pilih_menu == "3":
     program = "labelImg"
-    konfirmasi     = input("Is the Conda active?        (ex : Yes / No)      : ")
     konfirmasi2    = input("Is the Label active?        (ex : Yes / No)      : ")
     out_or_in     = input("Enter Production Line       (ex : Out_line)       : ")
     kendaraan, box, kode_box = data_input_default()
@@ -136,7 +145,6 @@ elif pilih_menu == "3":
     print("Copy dari Bawah Border Ini")
     print("======================================================")
     print("")
-    Activate_Conda(konfirmasi)
     Activate_Label(konfirmasi2)
     print(string_script)
     print("deactivate")
@@ -149,7 +157,6 @@ elif pilih_menu == "4":
     out_or_in     = input("Enter Production Line       (ex : Out_line)       : ")
     kendaraan, box, kode_box = data_input_default()
     epochs_count, model_type, batch_count, pat_count = data_input()
-    konfirmasi    = input("Is the Conda active?        (ex : Yes / No)      : ")
 
     #DATA
     data_source = f'{basis_folder}2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/X_Automasi/{kode_box}.yaml'
@@ -169,22 +176,29 @@ elif pilih_menu == "4":
     #PATIENCE
     patience_size_source = pat_count
 
+    #PERINTAH TRAIN
+    nama_file_lain = f'{basis_folder}4_Program/yolov5/train.py'
+    argumen = ["--data", f"{data_source}",
+            "--project", f"{project_source}",
+            "--epochs", f"{epochs_source}", 
+            "--weights", "", 
+            "--cfg", f"{cfg_source}",
+            "--batch-size", f"{batch_size_source}", 
+            "--patience", f"{patience_size_source}"]
+
     #SCRIPT TOTAL
-    print("")
-    print("Copy dari Bawah Border Ini")
-    print("======================================================")
-    print("")
-    Activate_Conda(konfirmasi)
-    print("")
-    script_train = f"python {basis_folder}4_Program/yolov5/train.py --data {data_source} --project {project_source} --epochs {epochs_source} --weights '' --cfg {cfg_source} --batch-size {batch_size_source} --patience {patience_size_source}"
-    print(script_train)
+    jalankan_file_python2(nama_file_lain, argumen)
     print("")
     print("======================================================")
-    print("Sampai Sebelum Border Ini")
+    print(f"Proses Training Modal ={kendaraan}-{box}-{kode_box}=")
+    print("======================BERHASIL=======================")
     print("")
 
+    #jalankan_file_python(f"/home/pcsistem/camera_vision_develop/4_Program/yolov5/train.py --data {data_source} --project {project_source} --epochs {epochs_source} --weights '' --cfg {cfg_source} --batch-size {batch_size_source} --patience {patience_size_source}")
+
 elif pilih_menu == "5":
-    print("coming_soon")
+    nama_file_lain = "/home/pcsistem/camera_vision_develop/4_Program/yolov5/trial_auto_anotasi_v4.py"
+    jalankan_file_python(nama_file_lain)
 
 elif pilih_menu == "6":
     print("coming_soon")
@@ -192,7 +206,6 @@ elif pilih_menu == "6":
 elif pilih_menu == "7":
     kendaraan, box, kode_box = data_input_default()
     epochs_count, model_type, batch_count, pat_count = data_input()
-    konfirmasi    = input("Is the Conda active?        (ex : Yes / No)      : ")
 
     #DATA
     data_source = f'{basis_folder}5_STUDIO_MAKER/{kendaraan}/{box}/{kode_box}/{kode_box}.yaml'
@@ -212,16 +225,20 @@ elif pilih_menu == "7":
     #PATIENCE
     patience_size_source = pat_count
 
+    #PERINTAH TRAIN
+    nama_file_lain = f'{basis_folder}4_Program/yolov5/train.py'
+    argumen = ["--data", f"{data_source}",
+            "--project", f"{project_source}",
+            "--epochs", f"{epochs_source}", 
+            "--weights", "", 
+            "--cfg", f"{cfg_source}",
+            "--batch-size", f"{batch_size_source}", 
+            "--patience", f"{patience_size_source}"]
+
     #SCRIPT TOTAL
-    print("")
-    print("Copy dari Bawah Border Ini")
-    print("======================================================")
-    print("")
-    Activate_Conda(konfirmasi)
-    print("")
-    script_train = f"python {basis_folder}4_Program/yolov5/train.py --data {data_source} --project {project_source} --epochs {epochs_source} --weights '' --cfg {cfg_source} --batch-size {batch_size_source} --patience {patience_size_source}"
-    print(script_train)
+    jalankan_file_python2(nama_file_lain, argumen)
     print("")
     print("======================================================")
-    print("Sampai Sebelum Border Ini")
+    print(f"Proses Training Modal ={kendaraan}-{box}-{kode_box}=")
+    print("======================BERHASIL=======================")
     print("")
