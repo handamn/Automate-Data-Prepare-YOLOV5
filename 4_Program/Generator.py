@@ -4,62 +4,50 @@ import shutil
 import yaml
 import subprocess
 
-#####################
-basis_folder = "/home/pcsistem/camera_vision_develop/"
-#####################
+BASIS_FOLDER = "/home/pcsistem/camera_vision_develop/"
 
-def jalankan_file_python(nama_file):
+def run_python_file(file_name, arguments=None):
     try:
-        subprocess.run(["python", nama_file], check=True)
+        subprocess.run(["python", file_name] + (arguments or []), check=True)
     except subprocess.CalledProcessError as e:
         print(f"Error: {e}")
 
-def jalankan_file_python2(nama_file, argumen):
-    subprocess.run(["python", nama_file] + argumen, check=True)
-
 def data_input_default():
-    car           = input("Enter Car Model             (ex : Innova)         : ")
-    steer         = input("Enter Steer                 (ex : RHD)            : ")
-    box           = input("Enter Box Class             (ex : Box1)           : ")
-    kode_box      = input("Enter Code Box              (ex : X_3_CDE)        : ")
-    kendaraan  = car + "_" + steer
+    car = input("Enter Car Model (ex : Innova): ")
+    steer = input("Enter Steer (ex : RHD): ")
+    box = input("Enter Box Class (ex : Box1): ")
+    kode_box = input("Enter Code Box (ex : X_3_CDE): ")
+    kendaraan = car + "_" + steer
 
     return kendaraan, box, kode_box
 
 def data_input():
-    epochs_count  = input("Enter How Many Epochs       (ex : 100)            : ")
-    model_type    = input("Enter Train Model Conf      (ex : yolov5l_CBAM_2) : ")
-    batch_count   = input("Enter Batch Count           (ex : -1)             : ")
-    pat_count     = input("Enter Patience              (ex : 100)            : ")
+    epochs_count = input("Enter How Many Epochs (ex : 100): ")
+    model_type = input("Enter Train Model Conf (ex : yolov5l_CBAM_2): ")
+    batch_count = input("Enter Batch Count (ex : -1): ")
+    pat_count = input("Enter Patience (ex : 100): ")
 
     return epochs_count, model_type, batch_count, pat_count
 
-def Activate_Label(confirm):
-    konfirmasi    = confirm
-    home_folder = f'cd {basis_folder}'
+def activate_label(confirm):
+    konfirmasi = confirm
+    home_folder = f'cd {BASIS_FOLDER}'
     activate_script = f'source Z_LabelImg/bin/activate'
 
-    if konfirmasi == "Yes" :
-        print("")
-        print("")
-    
+    if konfirmasi == "Yes":
+        print("\n\n")
     else:
-        print("")
-        print(home_folder)
-        print(activate_script)
-        print("cd 4_Program")
-        print("")
+        print(f"\n{home_folder}\n{activate_script}\ncd 4_Program\n")
 
-def Activate_Conda(confirm):
+def activate_conda(confirm):
     if confirm == "Yes":
-        print("")
-    
+        print("\n")
     else:
         print("conda activate Engser1")
 
 def copy_random_images(source_folder, destination_folder, num_images):
-    image_files = [f for f in os.listdir(source_folder) if f.lower().endswith(('.png','.jpg','.jpeg'))]
-    num_images = min(num_images,len(image_files))
+    image_files = [f for f in os.listdir(source_folder) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+    num_images = min(num_images, len(image_files))
     random_images = random.sample(image_files, num_images)
 
     for image in random_images:
@@ -69,9 +57,7 @@ def copy_random_images(source_folder, destination_folder, num_images):
         print(f"Copied: {image}")
 
 def print_menu():
-    print("")
-    print("Program Generator")
-    print("")
+    print("\nProgram Generator\n")
     print("Pilih Menu :")
     print("1. Ambil Gambar")
     print("2. Pilih Random 50")
@@ -79,10 +65,9 @@ def print_menu():
     print("4. Training Prepare Image")
     print("5. Auto Anotasi")
     print("6. Combine")
-    print("7. Training Final")
-    print("")
+    print("7. Training Final\n")
 
-    hasil_menu = input("Enter Menu                                        : ")
+    hasil_menu = input("Enter Menu: ")
     print("======================================================")
 
     return hasil_menu
@@ -93,12 +78,12 @@ if pilih_menu == "1":
     print("coming_soon")
 
 elif pilih_menu == "2":
-    out_or_in     = input("Enter Production Line       (ex : Out_line)       : ")
+    out_or_in = input("Enter Production Line (ex : Out_line): ")
     kendaraan, box, kode_box = data_input_default()
-    jumlah_gambar = input("Enter How Many Image        (ex : 100)            : ")
+    jumlah_gambar = input("Enter How Many Image (ex : 100): ")
 
-    source_folder = f'{basis_folder}2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/images/'
-    automasi_folder = f'{basis_folder}2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/X_Automasi/'
+    source_folder = f'{BASIS_FOLDER}2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/images/'
+    automasi_folder = f'{BASIS_FOLDER}2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/X_Automasi/'
     sub_automasi_images_folder = os.path.join(automasi_folder, 'images')
     sub_automasi_labels_folder = os.path.join(automasi_folder, 'labels')
 
@@ -117,13 +102,10 @@ elif pilih_menu == "2":
     data = {
         'train': automasi_folder,
         'val': automasi_folder,
-        'names': {
-            0: kode_box
-        }
+        'names': {0: kode_box}
     }
 
-    file_path = automasi_folder + kode_box +'.yaml'  # Ganti dengan nama file YAML yang diinginkan
-
+    file_path = f'{automasi_folder}{kode_box}.yaml'  
     with open(file_path, 'w') as file:
         yaml.dump(data, file, default_flow_style=False, sort_keys=False)
 
@@ -132,43 +114,37 @@ elif pilih_menu == "2":
 
 elif pilih_menu == "3":
     program = "labelImg"
-    konfirmasi2    = input("Is the Label active?        (ex : Yes / No)      : ")
-    out_or_in     = input("Enter Production Line       (ex : Out_line)       : ")
+    konfirmasi2 = input("Is the Label active? (ex : Yes / No): ")
+    out_or_in = input("Enter Production Line (ex : Out_line): ")
     kendaraan, box, kode_box = data_input_default()
-    root_folder = f'{basis_folder}2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/X_Automasi'
+    root_folder = f'{BASIS_FOLDER}2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/X_Automasi'
 
     folder_image = f'{root_folder}/images'
     folder_label = f'{root_folder}/labels/classes.txt'
     string_script = f'{program} {folder_image} {folder_label}'
 
-    print("")
-    print("Copy dari Bawah Border Ini")
-    print("======================================================")
-    print("")
-    Activate_Label(konfirmasi2)
+    print("\nCopy dari Bawah Border Ini\n======================================================\n")
+    activate_label(konfirmasi2)
     print(string_script)
-    print("deactivate")
-    print("")
-    print("======================================================")
-    print("Sampai Sebelum Border Ini")
-    print("")
+    print("deactivate\n")
+    print("======================================================\nSampai Sebelum Border Ini\n")
 
 elif pilih_menu == "4":
-    out_or_in     = input("Enter Production Line       (ex : Out_line)       : ")
+    out_or_in = input("Enter Production Line (ex : Out_line): ")
     kendaraan, box, kode_box = data_input_default()
     epochs_count, model_type, batch_count, pat_count = data_input()
 
     #DATA
-    data_source = f'{basis_folder}2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/X_Automasi/{kode_box}.yaml'
+    data_source = f'{BASIS_FOLDER}2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/X_Automasi/{kode_box}.yaml'
     
     #PROJECT
-    project_source = f'{basis_folder}2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/Models'
+    project_source = f'{BASIS_FOLDER}2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/Models'
 
     #EPOCH
     epochs_source = epochs_count
 
     #CFG
-    cfg_source = f'{basis_folder}4_Program/yolov5/models/{model_type}.yaml'
+    cfg_source = f'{BASIS_FOLDER}4_Program/yolov5/models/{model_type}.yaml'
 
     #BATCH-SIZE
     batch_size_source = batch_count
@@ -177,7 +153,7 @@ elif pilih_menu == "4":
     patience_size_source = pat_count
 
     #PERINTAH TRAIN
-    nama_file_lain = f'{basis_folder}4_Program/yolov5/train.py'
+    nama_file_lain = f'{BASIS_FOLDER}4_Program/yolov5/train.py'
     argumen = ["--data", f"{data_source}",
             "--project", f"{project_source}",
             "--epochs", f"{epochs_source}", 
@@ -187,18 +163,14 @@ elif pilih_menu == "4":
             "--patience", f"{patience_size_source}"]
 
     #SCRIPT TOTAL
-    jalankan_file_python2(nama_file_lain, argumen)
-    print("")
-    print("======================================================")
+    run_python_file(nama_file_lain, argumen)
+    print("\n======================================================")
     print(f"Proses Training Modal ={kendaraan}-{box}-{kode_box}=")
-    print("======================BERHASIL=======================")
-    print("")
-
-    #jalankan_file_python(f"/home/pcsistem/camera_vision_develop/4_Program/yolov5/train.py --data {data_source} --project {project_source} --epochs {epochs_source} --weights '' --cfg {cfg_source} --batch-size {batch_size_source} --patience {patience_size_source}")
+    print("======================BERHASIL=======================\n")
 
 elif pilih_menu == "5":
-    nama_file_lain = "/home/pcsistem/camera_vision_develop/4_Program/yolov5/trial_auto_anotasi_v4.py"
-    jalankan_file_python(nama_file_lain)
+    nama_file_lain = f"{BASIS_FOLDER}4_Program/yolov5/trial_auto_anotasi_v4.py"
+    run_python_file(nama_file_lain)
 
 elif pilih_menu == "6":
     print("coming_soon")
@@ -208,16 +180,16 @@ elif pilih_menu == "7":
     epochs_count, model_type, batch_count, pat_count = data_input()
 
     #DATA
-    data_source = f'{basis_folder}5_STUDIO_MAKER/{kendaraan}/{box}/{kode_box}/{kode_box}.yaml'
+    data_source = f'{BASIS_FOLDER}5_STUDIO_MAKER/{kendaraan}/{box}/{kode_box}/{kode_box}.yaml'
 
     #PROJECT
-    project_source = f'{basis_folder}5_STUDIO_MAKER/{kendaraan}/{box}/{kode_box}/Models'
+    project_source = f'{BASIS_FOLDER}5_STUDIO_MAKER/{kendaraan}/{box}/{kode_box}/Models'
 
     #EPOCH
     epochs_source = epochs_count
 
     #CFG
-    cfg_source = f'{basis_folder}4_Program/yolov5/models/{model_type}.yaml'
+    cfg_source = f'{BASIS_FOLDER}4_Program/yolov5/models/{model_type}.yaml'
 
     #BATCH-SIZE
     batch_size_source = batch_count
@@ -226,7 +198,7 @@ elif pilih_menu == "7":
     patience_size_source = pat_count
 
     #PERINTAH TRAIN
-    nama_file_lain = f'{basis_folder}4_Program/yolov5/train.py'
+    nama_file_lain = f'{BASIS_FOLDER}4_Program/yolov5/train.py'
     argumen = ["--data", f"{data_source}",
             "--project", f"{project_source}",
             "--epochs", f"{epochs_source}", 
@@ -236,9 +208,7 @@ elif pilih_menu == "7":
             "--patience", f"{patience_size_source}"]
 
     #SCRIPT TOTAL
-    jalankan_file_python2(nama_file_lain, argumen)
-    print("")
-    print("======================================================")
-    print(f"Proses Training Modal ={kendaraan}-{box}-{kode_box}=")
-    print("======================BERHASIL=======================")
-    print("")
+    run_python_file(nama_file_lain, argumen)
+    print("\n======================================================")
+    print(f"Proses Training Final ={kendaraan}-{box}-{kode_box}=")
+    print("======================BERHASIL=======================\n")
