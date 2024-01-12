@@ -173,7 +173,8 @@ elif pilih_menu == "5":
     run_python_file(nama_file_lain)
 
 elif pilih_menu == "6":
-    print("coming_soon")
+    nama_file_lain = f"{BASIS_FOLDER}4_Program/trial_combine_v9.py"
+    run_python_file(nama_file_lain)
 
 elif pilih_menu == "7":
     kendaraan, box, kode_box = data_input_default()
