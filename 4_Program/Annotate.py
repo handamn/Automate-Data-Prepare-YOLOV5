@@ -2,6 +2,26 @@ import os
 import torch
 import pandas as pd
 from tqdm import tqdm
+import csv
+
+def baca_csv(nama_file):
+    try:
+        with open(nama_file, 'r', newline='') as file_csv:
+            reader = csv.reader(file_csv)
+            data = [row[0] for row in reader]  # Ambil hanya kolom pertama dari setiap baris
+            return sorted(data)  # Mengurutkan data
+    except FileNotFoundError:
+        return []
+
+def tulis_csv(nama_file, data):
+    with open(nama_file, 'w', newline='') as file_csv:
+        writer = csv.writer(file_csv)
+        for item in data:
+            writer.writerow([item])
+
+def tambah_data(data, input_string):
+    data.append(input_string)
+    return sorted(data)
 
 #####################
 basis_folder = "/home/pcsistem/camera_vision_develop/"
@@ -67,6 +87,25 @@ for nama in tqdm(train_list, desc="Processing Images"):
 
 with open(f"{folder_train_labels}/classes.txt", "w") as f:
     f.write(kode_box)
+
+if out_or_in == "Out_line":
+    folder_csv = f'{basis_folder}/2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/index_kelas.csv'
+    nama_file = folder_csv
+
+    # Memeriksa apakah file CSV sudah ada, jika tidak, buat file tersebut
+    if not os.path.exists(nama_file):
+        with open(nama_file, 'w', newline=''):
+            pass
+
+    # Membaca data dari file CSV
+    data = baca_csv(nama_file)
+
+    # Menambahkan string baru ke dalam data dan mengurutkannya
+    data = tambah_data(data, kode_box)
+
+    # Menyimpan data ke dalam file CSV
+    tulis_csv(nama_file, data)
+
 
 print("ALHAMDULILLAH SELESAI")
 print(" ")
