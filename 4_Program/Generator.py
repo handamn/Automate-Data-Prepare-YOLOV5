@@ -51,8 +51,6 @@ def activate_conda(confirm):
     else:
         print("conda activate Engser1")
 
-
-
 def copy_random_images(source_folder, destination_folder, num_images):
     image_files = [f for f in os.listdir(source_folder) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
     num_images = min(num_images, len(image_files))
@@ -180,7 +178,7 @@ elif pilih_menu == "4":
     print("======================BERHASIL=======================\n")
 
 elif pilih_menu == "5":
-    nama_file_lain = f"{BASIS_FOLDER}4_Program/yolov5/trial_auto_anotasi_v4.py"
+    nama_file_lain = f"{BASIS_FOLDER}4_Program/yolov5/trial_auto_anotasi_v5.py"
     run_python_file(nama_file_lain)
 
 elif pilih_menu == "6":
