@@ -162,7 +162,7 @@ elif pilih_menu == "4":
     patience_size_source = pat_count
 
     #PERINTAH TRAIN
-    nama_file_lain = f'{BASIS_FOLDER}4_Program/yolov5/train.py'
+    nama_file_lain = f'{BASIS_FOLDER}4_Program/train.py'
     argumen = ["--data", f"{data_source}",
             "--project", f"{project_source}",
             "--epochs", f"{epochs_source}", 
