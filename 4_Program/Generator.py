@@ -153,7 +153,7 @@ elif pilih_menu == "4":
     epochs_source = epochs_count
 
     #CFG
-    cfg_source = f'{BASIS_FOLDER}4_Program/yolov5/models/{model_type}.yaml'
+    cfg_source = f'{BASIS_FOLDER}4_Program/models/{model_type}.yaml'
 
     #BATCH-SIZE
     batch_size_source = batch_count
@@ -162,7 +162,7 @@ elif pilih_menu == "4":
     patience_size_source = pat_count
 
     #PERINTAH TRAIN
-    nama_file_lain = f'{BASIS_FOLDER}4_Program/train.py'
+    nama_file_lain = f'{BASIS_FOLDER}4_Program/yolov5/train.py'
     argumen = ["--data", f"{data_source}",
             "--project", f"{project_source}",
             "--epochs", f"{epochs_source}", 
@@ -178,7 +178,7 @@ elif pilih_menu == "4":
     print("======================BERHASIL=======================\n")
 
 elif pilih_menu == "5":
-    nama_file_lain = f"{BASIS_FOLDER}4_Program/yolov5/trial_auto_anotasi_v5.py"
+    nama_file_lain = f"{BASIS_FOLDER}4_Program/trial_auto_anotasi_v6.py"
     run_python_file(nama_file_lain)
 
 elif pilih_menu == "6":
@@ -199,7 +199,7 @@ elif pilih_menu == "7":
     epochs_source = epochs_count
 
     #CFG
-    cfg_source = f'{BASIS_FOLDER}4_Program/yolov5/models/{model_type}.yaml'
+    cfg_source = f'{BASIS_FOLDER}4_Program/models/{model_type}.yaml'
 
     #BATCH-SIZE
     batch_size_source = batch_count
