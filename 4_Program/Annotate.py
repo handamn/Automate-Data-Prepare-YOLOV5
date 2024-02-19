@@ -4,6 +4,10 @@ import pandas as pd
 from tqdm import tqdm
 import csv
 
+from pathlib import Path
+from models.experimental import attempt_load
+from utils.general import non_max_suppression
+
 def baca_csv(nama_file):
     try:
         with open(nama_file, 'r', newline='') as file_csv:
@@ -48,7 +52,7 @@ os.makedirs(folder_train_labels, exist_ok = True)
 
 folder_model = f'{basis_folder}/2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/Models/{model_ke}/weights/best.pt'
 
-model = torch.hub.load('.', "custom", path=folder_model, source='local', force_reload=True)
+model = torch.hub.load('/home/pcsistem/camera_vision_develop/4_Program/yolov5', "custom", path=folder_model, source='local', force_reload=True)
 
 
 # Mendapatkan daftar nama file di dalam folder
