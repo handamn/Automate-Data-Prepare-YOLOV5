@@ -4,6 +4,12 @@ import shutil
 import yaml
 import subprocess
 
+import os
+
+# Clear screen command
+os.system('cls' if os.name == 'nt' else 'clear')
+
+
 BASIS_FOLDER = "/home/pcsistem/camera_vision_develop/"
 
 def run_python_file(file_name, arguments=None):
@@ -13,19 +19,19 @@ def run_python_file(file_name, arguments=None):
         print(f"Error: {e}")
 
 def data_input_default():
-    car = input("Enter Car Model (ex : Innova): ")
-    steer = input("Enter Steer (ex : RHD): ")
-    box = input("Enter Box Class (ex : Box1): ")
-    kode_box = input("Enter Code Box (ex : X_3_CDE): ")
+    car           = input("Enter Car Model           (ex : Innova)          : ")
+    steer         = input("Enter Steer               (ex : RHD)             : ")
+    box           = input("Enter Box Class           (ex : Box1)            : ")
+    kode_box      = input("Enter Code Box            (ex : X_3_CDE)         : ")
     kendaraan = car + "_" + steer
 
     return kendaraan, box, kode_box
 
 def data_input():
-    epochs_count = input("Enter How Many Epochs (ex : 100): ")
-    model_type = input("Enter Train Model Conf (ex : yolov5l_CBAM_2): ")
-    batch_count = input("Enter Batch Count (ex : -1): ")
-    pat_count = input("Enter Patience (ex : 100): ")
+    epochs_count  = input("Enter How Many Epochs     (ex : 100)             : ")
+    model_type    = input("Enter Train Model Conf    (ex : yolov5l_CBAM_2)  : ")
+    batch_count   = input("Enter Batch Count         (ex : -1)              : ")
+    pat_count     = input("Enter Patience            (ex : 100)             : ")
 
     return epochs_count, model_type, batch_count, pat_count
 
@@ -67,7 +73,9 @@ def print_menu():
     print("6. Combine")
     print("7. Training Final\n")
 
-    hasil_menu = input("Enter Menu: ")
+    hasil_menu    = input("Enter Menu                                       : ")
+    # Clear screen command
+    os.system('cls' if os.name == 'nt' else 'clear')
     print("======================================================")
 
     return hasil_menu
@@ -75,12 +83,13 @@ def print_menu():
 pilih_menu = print_menu()
 
 if pilih_menu == "1":
-    print("coming_soon")
+    nama_file_lain = f"{BASIS_FOLDER}4_Program/trial_ambil_gambar_v1.py"
+    run_python_file(nama_file_lain)
 
 elif pilih_menu == "2":
-    out_or_in = input("Enter Production Line (ex : Out_line): ")
+    out_or_in     = input("Enter Production Line     (ex : Out_line)        : ")
     kendaraan, box, kode_box = data_input_default()
-    jumlah_gambar = input("Enter How Many Image (ex : 100): ")
+    jumlah_gambar = input("Enter How Many Image      (ex : 100)             : ")
 
     source_folder = f'{BASIS_FOLDER}2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/images/'
     automasi_folder = f'{BASIS_FOLDER}2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/X_Automasi/'
@@ -114,8 +123,8 @@ elif pilih_menu == "2":
 
 elif pilih_menu == "3":
     program = "labelImg"
-    konfirmasi2 = input("Is the Label active? (ex : Yes / No): ")
-    out_or_in = input("Enter Production Line (ex : Out_line): ")
+    konfirmasi2   = input("Is the Label active?      (ex : Yes / No)        : ")
+    out_or_in     = input("Enter Production Line     (ex : Out_line)        : ")
     kendaraan, box, kode_box = data_input_default()
     root_folder = f'{BASIS_FOLDER}2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/X_Automasi'
 
@@ -130,7 +139,7 @@ elif pilih_menu == "3":
     print("======================================================\nSampai Sebelum Border Ini\n")
 
 elif pilih_menu == "4":
-    out_or_in = input("Enter Production Line (ex : Out_line): ")
+    out_or_in     = input("Enter Production Line     (ex : Out_line)        : ")
     kendaraan, box, kode_box = data_input_default()
     epochs_count, model_type, batch_count, pat_count = data_input()
 
@@ -169,7 +178,7 @@ elif pilih_menu == "4":
     print("======================BERHASIL=======================\n")
 
 elif pilih_menu == "5":
-    nama_file_lain = f"{BASIS_FOLDER}4_Program/yolov5/trial_auto_anotasi_v4.py"
+    nama_file_lain = f"{BASIS_FOLDER}4_Program/yolov5/trial_auto_anotasi_v5.py"
     run_python_file(nama_file_lain)
 
 elif pilih_menu == "6":
