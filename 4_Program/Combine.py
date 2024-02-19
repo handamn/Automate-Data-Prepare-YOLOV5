@@ -7,17 +7,19 @@ import shutil
 import random
 import yaml
 
+BASIS_FOLDER = "/home/pcsistem/camera_vision_develop/"
+
 ############################
 print(" ")
-car        = input("Enter Car Model                (ex : Innova)  : ")
-steer      = input("Enter Steer                    (ex : RHD)     : ")
-box        = input("Enter Box Class                (ex : Box1)    : ")
-kode_box   = input("Enter Code Box                 (ex : X_3_CDE) : ")
+car        = input("Enter Car Model             (ex : Innova)  : ")
+steer      = input("Enter Steer                 (ex : RHD)     : ")
+box        = input("Enter Box Class             (ex : Box1)    : ")
+kode_box   = input("Enter Code Box              (ex : X_3_CDE) : ")
 kendaraan  = car + "_" + steer
 
-OK_count   = int(input("Enter OK Value                 (ex : 200)     : "))
-NG_count   = int(input("Enter NG Value each folder     (ex : 35)      : "))
-percentage = input("Enter OK Percentage            (ex: 80)       : ")
+OK_count   = int(input("Enter OK Value              (ex : 200)     : "))
+NG_count   = int(input("Enter NG Value each folder  (ex : 35)      : "))
+percentage = input("Enter OK Percentage         (ex: 80)       : ")
 percentage = int(percentage) / 100
 ############################
 
@@ -100,12 +102,12 @@ def split_data(kode_box, input_folder, output_folder, num_samples=200, split_rat
             pbar.update(1)
 
 
-nama_file_csv = '/home/pcsistem/camera_vision_develop/2_Stock_Foto/Out_line/Innova_RHD/Box1/index_kelas.csv'  # Ganti dengan nama file CSV Anda
+nama_file_csv = f'{BASIS_FOLDER}2_Stock_Foto/Out_line/{kendaraan}/{box}/index_kelas.csv'  # Ganti dengan nama file CSV Anda
 data_csv = baca_file_csv(nama_file_csv)
 
 ############################
-base_folder = '/home/pcsistem/camera_vision_develop/2_Stock_Foto/'
-folder_output = "/home/pcsistem/camera_vision_develop/5_STUDIO_MAKER/Innova_RHD/Box1"
+base_folder = f'{BASIS_FOLDER}2_Stock_Foto/'
+folder_output = f"{BASIS_FOLDER}5_STUDIO_MAKER/{kendaraan}/{box}"
 ############################
 
 i = 0
