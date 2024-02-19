@@ -62,9 +62,12 @@ print("")
 
 print("Pilih Menu :")
 print("1. Ambil Gambar")
-print("2. Anotasi")
-print("3. Training Prepare Image")
-print("4. Training Final")
+print("2. Pilih Random 50")
+print("3. Anotasi")
+print("4. Training Prepare Image")
+print("5. Auto Anotasi")
+print("6. Combine")
+print("7. Training Final")
 print("")
 
 pilih_menu = input("Enter Menu                                        : ")
@@ -73,14 +76,14 @@ print("======================================================")
 if pilih_menu == "1":
     print("coming_soon")
 
-elif pilih_menu == "2":
+elif pilih_menu == "3":
     Activate_Label()
     print("")
     print("======================================================")
     print("Sampai Sebelum Border Ini")
     print("")
 
-elif pilih_menu == "3":
+elif pilih_menu == "4":
     kendaraan, box, kode_box, epochs_count, model_type, batch_count, pat_count = data_input()
 
     print(" ")
@@ -104,10 +107,11 @@ elif pilih_menu == "3":
     #PATIENCE
     patience_size_source = pat_count
 
+
     #SCRIPT TOTAL
     print("")
     Activate_Conda()
-    script_train = f"python train.py --data {data_source} --project {project_source} --epochs {epochs_source} --weights '' --cfg {cfg_source} --batch-size {batch_size_source} --patience {patience_size_source}"
+    script_train = f"python {basis_folder}4_Program/yolov5/train.py --data {data_source} --project {project_source} --epochs {epochs_source} --weights '' --cfg {cfg_source} --batch-size {batch_size_source} --patience {patience_size_source}"
     print(script_train)
     print("")
     print("======================================================")
@@ -115,7 +119,7 @@ elif pilih_menu == "3":
     print("")
 
 
-elif pilih_menu == "4":
+elif pilih_menu == "7":
     kendaraan, box, kode_box, epochs_count, model_type, batch_count, pat_count = data_input()
     #DATA
     data_source = f'{basis_folder}5_STUDIO_MAKER/{kendaraan}/{box}/{kode_box}/{kode_box}.yaml'
@@ -138,7 +142,7 @@ elif pilih_menu == "4":
     #SCRIPT TOTAL
     print("")
     Activate_Conda()
-    script_train = f"python train.py --data {data_source} --project {project_source} --epochs {epochs_source} --weights '' --cfg {cfg_source} --batch-size {batch_size_source} --patience {patience_size_source}"
+    script_train = f"python {basis_folder}4_Program/yolov5/train.py --data {data_source} --project {project_source} --epochs {epochs_source} --weights '' --cfg {cfg_source} --batch-size {batch_size_source} --patience {patience_size_source}"
     print(script_train)
     print("")
     print("======================================================")
